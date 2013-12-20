@@ -850,6 +850,10 @@ section #title .credits.right {
   margin-top: 1em;
 }
 
+footer {
+  text-align: center;
+}
+
 button {
   color: white;
   text-shadow: 0 1px 2px black;

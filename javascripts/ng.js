@@ -101,10 +101,6 @@ ng.endingLetters = {
 
 };
 
-ng.run = function(){
-
-};
-
 ng.inArray = function(what, whichArray){
 
   var i = 0;

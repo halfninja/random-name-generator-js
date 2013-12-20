@@ -1,0 +1,322 @@
+<!doctype html>
+<html>
+<head>
+</head>
+<body>
+<h1 id="result"></h1>
+<textarea id="names">
+Aiden
+Jackson
+Ethan
+Liam
+Mason
+Noah
+Lucas
+Jacob
+Jayden
+Jack
+Logan
+Ryan
+Caleb
+Benjamin
+William
+Michael
+Alexander
+Elijah
+Matthew
+Dylan
+James
+Owen
+Connor
+Brayden
+Carter
+Landon
+Joshua
+Luke
+Daniel
+Gabriel
+Nicholas
+Nathan
+Oliver
+Henry
+Andrew
+Gavin
+Cameron
+Eli
+Max
+Isaac
+Evan
+Samuel
+Grayson
+Tyler
+Zachary
+Wyatt
+Joseph
+Charlie
+Hunter
+David
+Anthony
+Christian
+Colton
+Thomas
+Dominic
+Austin
+John
+Sebastian
+Cooper
+Levi
+Parker
+Isaiah
+Chase
+Blake
+Aaron
+Alex
+Adam
+Tristan
+Julian
+Jonathan
+Christopher
+Jace
+Nolan
+Miles
+Jordan
+Carson
+Colin
+Ian
+Riley
+Xavier
+Hudson
+Adrian
+Cole
+Brody
+Leo
+Jake
+Bentley
+Sean
+Jeremiah
+Asher
+Nathaniel
+Micah
+Jason
+Ryder
+Declan
+Hayden
+Brandon
+Easton
+Lincoln
+Harrison
+Sophia
+Emma
+Olivia
+Isabella
+Ava
+Lily
+Zoe
+Chloe
+Mia
+Madison
+Emily
+Ella
+Madelyn
+Abigail
+Aubrey
+Addison
+Avery
+Layla
+Hailey
+Amelia
+Hannah
+Charlotte
+Kaitlyn
+Harper
+Kaylee
+Sophie
+Mackenzie
+Peyton
+Riley
+Grace
+Brooklyn
+Sarah
+Aaliyah
+Anna
+Arianna
+Ellie
+Natalie
+Isabelle
+Lillian
+Evelyn
+Elizabeth
+Lyla
+Lucy
+Claire
+Makayla
+Kylie
+Audrey
+Maya
+Leah
+Gabriella
+Annabelle
+Savannah
+Nora
+Reagan
+Scarlett
+Samantha
+Alyssa
+Allison
+Elena
+Stella
+Alexis
+Victoria
+Aria
+Molly
+Maria
+Bailey
+Sydney
+Bella
+Mila
+Taylor
+Kayla
+Eva
+Jasmine
+Gianna
+Alexandra
+Julia
+Eliana
+Kennedy
+Brianna
+Ruby
+Lauren
+Alice
+Violet
+Kendall
+Morgan
+Caroline
+Piper
+Brooke
+Elise
+Alexa
+Sienna
+Reese
+Clara
+Paige
+Kate
+Nevaeh
+Sadie
+Quinn
+Isla
+Eleanor
+</textarea>
+<textarea id="lastnames">
+Walker
+Jones
+Taylor
+Brown
+Williams
+Wilson
+Johnson
+Davies
+Robinson
+Wright
+Thompson
+Evans
+Smith
+White
+Roberts
+Green
+Hall
+Wood
+Jackson
+Clarke
+Barton
+Howes
+Davis
+Robertson
+Boulby
+Dale
+Statham
+Cox
+Greene
+Grey
+Hammond
+Graham
+Lawrence
+</textarea>
+<script>
+(function(){
+
+function generate(names) {
+	var mappings = {};
+	var addMapping = function(from, to) {
+		if (!mappings[from]) {
+			mappings[from] = { };
+		}
+		if (mappings[from][to]) {
+			mappings[from][to]++;
+		} else {
+			mappings[from][to] = 1;
+		}
+	}
+
+	for (i=0; i<names.length; i++) {
+		var name = names[i];
+		for (j=1; j<name.length; j++) {
+			addMapping(name[j-1], name[j]);
+		}	
+	}
+	return mappings;
+}
+
+function objEach(obj, fn) {
+	for (var key in obj) {
+		if (obj.hasOwnProperty(key)) {
+			fn(key, obj[key]);
+		}
+	}
+}
+
+function pickNext(mappings, letter) {
+	var options = mappings[letter];
+	var total = 0;
+	objEach(options, function(key, value) {
+		total += options[key];
+	});
+	var r = Math.floor(Math.random()*total);
+	var result;
+	objEach(options, function(key, value) {
+		if (r < value) { result = key; r = 10000; }
+		r -= value;
+	});
+	return result;
+}
+
+function randomArraySelect(array) {
+	return array[randInt(array.length)];
+}
+
+function generateName(mappings, length) {
+	var firstLetters = [];
+	objEach(mappings, function(key, value) {
+		if (key.toUpperCase() === key) firstLetters.push(key);
+	});
+	var firstLetter = randomArraySelect(firstLetters);
+	var name = [firstLetter];
+	for (i=1; i<length; i++) {
+		name.push(pickNext(mappings, name[i-1]));
+	}
+	return name.join('');
+}
+
+function randInt(max) { return Math.floor(Math.random()*max); }
+
+var names = document.getElementById('names').value.split(/\s+/);
+var lastnames = document.getElementById('names').value.split(/\s+/);
+var mappings = generate(names);
+var lastmappings = generate(lastnames);
+
+var name = (generateName(mappings, 3+randInt(4)) + ' ' + generateName(lastmappings, 4+randInt(4)));
+document.getElementById('result').innerHTML = name;
+
+})();
+</script>
+</body>
+</html>

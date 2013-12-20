@@ -3,9 +3,25 @@
   <head>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="chrome=1">
-    <title>Your New Name by halfninja</title>
+    <title>Your New Name by halfninja and @TheoriaMusic</title>
     <link rel="stylesheet" href="stylesheets/styles.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+    <script>
+      var searchParams = {};
+      (function(){
+        var params = window.location.search.replace(/^\?/,'').split('&');
+        for (i=0; i<params.length; i++) {
+          var split = params[i].split('=');
+          if (split.length > 1) searchParams[split[0]] = split[1];
+        }
+        console.log(searchParams);
+      })();
+    </script>
+    <script src="javascripts/seedrandom.js"></script>
+    <script>
+      if (searchParams.seed && searchParams.seed !== '') {
+        Math.seedrandom(searchParams.seed);
+      }
+    </script>
     <script src="javascripts/ng.js"></script>
     <!--[if lt IE 9]>
       <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
@@ -33,12 +49,16 @@
       </section>
 
     </div>
+    <footer>
+      <small>
+        code on <a href="https://github.com/halfninja/random-name-generator-js">github</a>
+      </small>
+    </footer>
     <!--[if !IE]><script>fixScale(document);</script><![endif]-->
     <script>
-    $('#newname-button').click(function() {
-      $('#newname').html(ng.generateName());
-      return false;
-    })
+    document.getElementById('newname-button').onclick = function() {
+      document.getElementById('newname').innerHTML = ng.generateName();
+    };
     </script>
   </body>
 </html>
